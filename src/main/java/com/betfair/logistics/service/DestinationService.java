@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class DestinationService {
@@ -56,5 +58,23 @@ public class DestinationService {
         destinationRepository.save(destination);
 
         return destination.getId();
+    }
+
+    public void updateDestination(DestinationDto destinationDto) throws CannotCreateResourceException {
+        if(destinationDto.getId()==null){
+            throw new CannotCreateResourceException("Id should be provided");
+        }
+
+        Optional<Destination> destinationOptional=destinationRepository.findByName(destinationDto.getName());
+        if(destinationOptional.isPresent()){
+            Destination destination=destinationOptional.get();
+            if(!Objects.equals(destination.getId(),destinationDto.getId())){
+                throw new CannotCreateResourceException(String.format("Name=%s is already assigned to destination with id=%d",destination.getName(),destination.getId()));
+            }
+        }
+
+        Destination destination= DestinationConverter.dtoToModel(destinationDto);
+        destinationRepository.save(destination);
+
     }
 }

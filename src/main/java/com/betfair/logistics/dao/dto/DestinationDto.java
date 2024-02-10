@@ -16,7 +16,7 @@ public class DestinationDto {
 
     private Long id;
 
-    @NotBlank
+    @NotBlank(message="Name is mandatory")
     private String name;
 
     @NotNull
