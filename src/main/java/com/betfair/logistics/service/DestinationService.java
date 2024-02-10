@@ -8,6 +8,7 @@ import com.betfair.logistics.dao.repository.OrderRepository;
 import com.betfair.logistics.exceptions.CannotCreateResourceException;
 import com.betfair.logistics.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -16,15 +17,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class DestinationService {
 
     private final DestinationRepository destinationRepository;
     private final OrderRepository orderRepository;
-
-    public DestinationService(DestinationRepository destinationRepository, OrderRepository orderRepository) {
-        this.destinationRepository = destinationRepository;
-        this.orderRepository = orderRepository;
-    }
 
     public List<DestinationDto> getAllDestinations() {
         List<Destination>destinationList =destinationRepository.findAll();
@@ -50,7 +47,7 @@ public class DestinationService {
             throw new CannotCreateResourceException("Id must be null");
         }
 
-        if(destinationRepository.findByName(destinationDto.getName())!=null){
+        if(destinationRepository.findByName(destinationDto.getName()).isPresent()){
             throw new CannotCreateResourceException(String.format("Destination with name %s already exists",destinationDto.getName()));
         }
 

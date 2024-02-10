@@ -16,4 +16,6 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
         order.setOrderStatus(OrderStatus.ARCHIVED);
         this.save(order);
     }
+
+
 }
