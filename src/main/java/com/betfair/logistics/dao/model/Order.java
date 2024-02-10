@@ -1,11 +1,13 @@
 package com.betfair.logistics.dao.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
+@Data
 public class Order {
 
     @Id
@@ -23,7 +25,7 @@ public class Order {
     private OrderStatus orderStatus;
 
     @ManyToOne
-    @JoinColumn(name = "destination_id", nullable = false)
+    @JoinColumn(name = "destination_id")
     Destination destination;
 
 }

@@ -1,17 +1,22 @@
 package com.betfair.logistics.dao.model;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
 
 @Entity
 @Table(name = "destinations")
-@EqualsAndHashCode
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Destination {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  //de obicei se foloseste sequence(+ se poate folosi acelasi sequence pt mai multe tabele) sau auto
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -19,13 +24,6 @@ public class Destination {
 
     @Column(nullable = false)
     private Integer distance;
-
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destination")
-//    List<Order> orders;
-
-
-
-
 
 
 }

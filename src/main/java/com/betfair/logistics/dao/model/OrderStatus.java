@@ -1,5 +1,5 @@
 package com.betfair.logistics.dao.model;
 
 public enum OrderStatus {
-    NEW,DELIVERING,SHIPPING,DELIVERED,CANCELLED;
+    NEW,DELIVERING,SHIPPING,DELIVERED,CANCELLED,ARCHIVED
 }
