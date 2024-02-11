@@ -13,6 +13,7 @@ import com.betfair.logistics.exceptions.CannotCreateResourceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,17 @@ public class OrderService {
     private final DestinationRepository destinationRepository;
 
     private final OrderRepository orderRepository;
+    public List<OrderDto> getOrders(String dateAsString, String destinationQueryParam) {
+        Long dateAsLong=companyInfo.getCurrentDateAsLong();
+
+        if(!dateAsString.isBlank())
+            dateAsLong= companyInfo.getLocalDateStringAsLong(dateAsString);
+
+       List<Order> foundOrders= orderRepository.findAllByDeliveryDateAndDestination_NameContainingIgnoreCase(dateAsLong,destinationQueryParam);
+
+       return OrderConverter.modelListToDtoList(foundOrders);
+    }
+
     public List<OrderDto> addOrders(List<AddOrderDto> addOrdersDtos) throws CannotCreateResourceException {
 
         Map<Long,Destination> destinationMap=destinationRepository.findAll().stream()
@@ -56,7 +68,9 @@ public class OrderService {
                 order.setOrderStatus(OrderStatus.CANCELLED);
         }
 
-        orderRepository.saveAll(foundOrders);
+        //nu face batch update
+        orderRepository.saveAll(foundOrders); //daca cade una cad toate
+
     }
 
     private void validateOrdersPayload(List<AddOrderDto> ordersDtos, Set<Long> destinationIds) throws CannotCreateResourceException {

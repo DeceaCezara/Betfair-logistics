@@ -16,6 +16,10 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
         order.setOrderStatus(OrderStatus.ARCHIVED);
         this.save(order);
     }
+    //pentru a cauta dupa un field intr-un field
+    List<Order> findAllByDeliveryDateAndDestination_NameContainingIgnoreCase(Long deliveryDate, String destinationQueryString);
+
+
 
 
 }
